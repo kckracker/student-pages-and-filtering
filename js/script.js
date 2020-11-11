@@ -9,12 +9,12 @@ Data will be broken up into pages, reflected in the second argument accepted by 
 Setting page to display only 9 total student blocks per page
 */
 function showPage(list, page) {
-   // storing the index of page numbers in variables for startIndex and endIndex
+   // Storing the index of page numbers in variables for startIndex and endIndex
    const startIndex = (page * 9) - 9;
    const endIndex = (page * 9);
-   // store the location of ul with class student-list in variable named studentData
+   // Storing the location of ul with class student-list in variable named studentData
    const studentList = document.querySelector('.student-list');
-   // emptying innerHTML of ul with class student-list to ensure no students currently displayed
+   // Emptying innerHTML of ul with class student-list to ensure no students currently displayed
    studentList.innerHTML = '';
    // Looping through list argument to obtain data and adding HTML elements for each student listing for every iteration  of i
    for (let i = 0; i < list.length; i++) {
@@ -47,7 +47,6 @@ function addPagination(list) {
    let pageNumber = document.querySelector('.link-list');
    // Clearing innerHTML of ul element to ensure no buttons are currently showing
    pageNumber.innerHTML = '';
-   
    // Looping through the buttonTotal variable and updating innerHTML of pageNumber variable to insert page buttons upon each iteration
    for (let i = 0; i < buttonTotal.valueOf() ; i++){
       // basic structure of additional HTML elements referenced from instructions given at https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
@@ -81,7 +80,7 @@ function addPagination(list) {
 
 // Creating new element named searchBar
 const searchBar = document.createElement('span');
-// Endsuring innerHTML for searchBar element is empty by default
+// Placing innerHTML to define searchbar contents in HTML. Basing text bar on recommended text found at 
 searchBar.innerHTML = `
    <label for="search" class="student-search">
       <input id="search" placeholder="Search by name...">
@@ -96,41 +95,59 @@ heading.appendChild(searchBar);
 const searchButton = heading.querySelector('.student-search button');
 let searchInput = document.querySelector('input#search');
 // Looping through data set stored in data variable to obtain set of names to compare with search input
-for ( let i = 0; i < data.length; i++){
-   let studentNames = data[i];
-   // Adding variables to store all object name properties
-   let firstNames = studentNames.name.first;
-   let lastNames = studentNames.name.last;
-   let titleNames = studentNames.name.title;
    // Adding event listener to the input field to away keystrokes
-   searchInput.addEventListener('keyup', () => {
-      // Storing search input in a variable
-      let searchText = '';
-      searchText = searchInput.value;
-      // Placing if statement to compare search input stored in searchText with names stored in name variables
-      if (searchText.toLowerCase() === firstNames.toLowerCase()|| searchText.toLowerCase() === lastNames.toLowerCase() || searchText === titleNames.toLowerCase()){
-         // Creating empty array
-         let matchingNames = [];
+searchInput.addEventListener('keyup', () => {
+   // Storing search input in a variable
+   let searchText = '';
+   // Creating empty array
+   let matchingNames = [];
+   // Adding value of input to the searchText variable
+   searchText = searchInput.value;
+   // Looping through data set stored in data variable to obtain set of names to compare with search input
+   for ( let i = 0; i < data.length; i++){
+      let studentNames = data[i];
+      // Adding variables to store all object name properties
+      let firstNames = studentNames.name.first;
+      let lastNames = studentNames.name.last;
+      let titleNames = studentNames.name.title;
+      // Placing if statement to check if the stored name variables include the search input text
+      if (firstNames.toLowerCase().includes(searchText.toLowerCase()) || lastNames.toLowerCase().includes(searchText.toLowerCase()) || titleNames.toLowerCase().includes(searchText.toLowerCase())){
          // Pushing data object info to empty array where the search discovered a match with name variables
          matchingNames.push(data[i]);
-         // Calling previous functions with newly formed list matchingNames
-         showPage(matchingNames, 1);
-         addPagination(matchingNames);
-      } 
-   });
-   searchButton.addEventListener('click', () => {
-      let searchText = '';
-      searchText = searchInput.value;
-      if (searchText.toLowerCase() === firstNames.toLowerCase()|| searchText.toLowerCase() === lastNames.toLowerCase() || searchText === titleNames.toLowerCase()){
-         let matchingNames = [];
+         } 
+   }
+      // Calling previous functions with newly formed list matchingNames
+      showPage(matchingNames, 1);
+      addPagination(matchingNames);
+});
+
+// Creating additional eventListener to check searched input around the click event on the search button
+searchButton.addEventListener('click', () => {
+   // Storing search input in a variable
+   let searchText = '';
+   // Creating empty array
+   let matchingNames = [];
+   // Adding value of input to the searchText variable
+   searchText = searchInput.value;
+   // Looping through data set stored in data variable to obtain set of names to compare with search input
+   for ( let i = 0; i < data.length; i++){
+      let studentNames = data[i];
+      // Adding variables to store all object name properties
+      let firstNames = studentNames.name.first;
+      let lastNames = studentNames.name.last;
+      let titleNames = studentNames.name.title;
+      // Placing if statement to check if the stored name variables include the search input text
+      if (firstNames.toLowerCase().includes(searchText.toLowerCase()) || lastNames.toLowerCase().includes(searchText.toLowerCase()) || titleNames.toLowerCase().includes(searchText.toLowerCase())){
          matchingNames.push(data[i]);
-         showPage(matchingNames, 1);
-         addPagination(matchingNames);
       } 
-   });
-}
+   }
+   // Calling previous functions with newly formed list matchingNames
+   showPage(matchingNames, 1);
+   addPagination(matchingNames);
+});
 
 
-// Calling functions and showing page 1 as the default - addPagination incorporates the first function to feed it new page arguments based on user clicks
+
+// Calling functions and showing page 1 as the default. The addPagination function incorporates the first function to feed it new page arguments based on user clicks
 showPage(data, 1);
 addPagination(data);
